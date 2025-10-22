@@ -1,0 +1,30 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{MnSymbol}
+\usepackage{bussproofs}
+\begin{document}
+
+\begin{prooftree}
+\AxiomC{}
+\LeftLabel{(A$_1$)}
+\RightLabel{\begin{pmatrix}
+    \text{if } n_1, n_2 \in \mathbb{N},\\
+    \text{op } \in \left\{ +, -, \times \right\}\\
+    \text{and } n = n_1 \text{ op } n_2 \end{pmatrix}}
+\UnaryInfC{$\langle n_1 \text{ op } n_2 \rangle \hookrightarrow \langle n \rangle$}
+\end{prooftree}
+
+\bigskip
+\bigskip
+
+\begin{prooftree}
+\AxiomC{$\langle e_1 \rangle \hookrightarrow \langle e'_1 \rangle$}
+
+\LeftLabel{(A$_2$)}
+\RightLabel{(if op $\in \left\{ +, -, \times \right\}$)}
+\UnaryInfC{$\langle e_1 \text{ op } e_2 \rangle \hookrightarrow \langle e'_1 \text{ op } e_2 \rangle$}
+\end{prooftree}
+
+
+\end{document}
