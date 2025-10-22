@@ -163,7 +163,7 @@ theorem stepstar_mul_right (n: Int) (e2 e2': ArExpr V) :
         . apply Step.mulRight _ _ _ step1
         . exact ih
 
-theorem chasle_step_star {e1 e2 e3: ArExpr V}:
+theorem chasles_step_star {e1 e2 e3: ArExpr V}:
     StepStar V val e1 e2 ->
         StepStar V val e2 e3 ->
             StepStar V val e1 e3 := by
@@ -188,7 +188,7 @@ theorem completeness (e: ArExpr V) : StepStar V val e (ArExpr.Const (eval V val 
         have b := stepstar_add_right _ (eval V val e1) e2 _ ih2
         have c := Step.addConstConst (val := val) (eval V val e1) (eval V val e2)
         have d := StepStar.trans _ _ _ c (StepStar.refl _ (ArExpr.Const (eval V val e1 + eval V val e2)))
-        have e := chasle_step_star _ a (chasle_step_star _ b d)
+        have e := chasles_step_star _ a (chasles_step_star _ b d)
         exact e
     | Sub e1 e2 ih1 ih2 =>
         -- ih1 : StepStar e1 (ArExpr.Const (eval e1))
@@ -198,7 +198,7 @@ theorem completeness (e: ArExpr V) : StepStar V val e (ArExpr.Const (eval V val 
         have b := stepstar_sub_right _ (eval V val e1) e2 _ ih2
         have c := Step.subConstConst (val := val) (eval V val e1) (eval V val e2)
         have d := StepStar.trans _ _ _ c (StepStar.refl _ (ArExpr.Const  (eval V val e1 - eval V val e2)))
-        have e := chasle_step_star _ a (chasle_step_star _ b d)
+        have e := chasles_step_star _ a (chasles_step_star _ b d)
         exact e
     | Mul e1 e2 ih1 ih2 =>
         -- ih1 : StepStar e1 (ArExpr.Const (eval e1))
@@ -208,7 +208,7 @@ theorem completeness (e: ArExpr V) : StepStar V val e (ArExpr.Const (eval V val 
         have b := stepstar_mul_right _ (eval V val e1) e2 _ ih2
         have c := Step.mulConstConst (val := val) (eval V val e1) (eval V val e2)
         have d := StepStar.trans _ _ _ c (StepStar.refl _ (ArExpr.Const (eval  V val e1 * eval V val e2)))
-        have e := chasle_step_star _ a (chasle_step_star _ b d)
+        have e := chasles_step_star _ a (chasles_step_star _ b d)
         exact e
     | Var var =>
         simp [eval]
