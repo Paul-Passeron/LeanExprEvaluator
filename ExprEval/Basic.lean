@@ -85,6 +85,59 @@ theorem stepstar_add_right (n: Int) (e2 e2': Expr) :
         . apply Step.addRight _ _ _ step1
         . exact ih
 
+
+
+theorem stepstar_sub_left (e1 e1' e2: Expr) :
+    StepStar e1 e1' → StepStar (Expr.Sub e1 e2) (Expr.Sub e1' e2) := by
+    intro h
+    induction h with
+    | refl _ => apply StepStar.refl
+    | trans _ _ _ step _ ih =>
+        apply StepStar.trans
+        . exact Step.subLeft _ _ _ step
+        . exact ih
+
+theorem stepstar_sub_right (n: Int) (e2 e2': Expr) :
+    StepStar e2 e2' → StepStar (Expr.Sub (Expr.Const n) e2) (Expr.Sub (Expr.Const n) e2') := by
+    intro h
+    induction h with
+    | refl _ => apply StepStar.refl
+    | trans e1 e2 e3 step1 step2 ih =>
+        apply StepStar.trans
+        . apply Step.subRight _ _ _ step1
+        . exact ih
+
+
+
+theorem stepstar_mul_left (e1 e1' e2: Expr) :
+    StepStar e1 e1' → StepStar (Expr.Mul e1 e2) (Expr.Mul e1' e2) := by
+    intro h
+    induction h with
+    | refl _ => apply StepStar.refl
+    | trans _ _ _ step _ ih =>
+        apply StepStar.trans
+        . exact Step.mulLeft _ _ _ step
+        . exact ih
+
+theorem stepstar_mul_right (n: Int) (e2 e2': Expr) :
+    StepStar e2 e2' → StepStar (Expr.Mul (Expr.Const n) e2) (Expr.Mul (Expr.Const n) e2') := by
+    intro h
+    induction h with
+    | refl _ => apply StepStar.refl
+    | trans e1 e2 e3 step1 step2 ih =>
+        apply StepStar.trans
+        . apply Step.mulRight _ _ _ step1
+        . exact ih
+
+theorem chasle_step_star {e1 e2 e3: Expr}: StepStar e1 e2 -> StepStar e2 e3 -> StepStar e1 e3 := by
+    intros h1 h2
+    induction h1 with
+    | refl e => exact h2
+    | trans a b c step rest ihn =>
+        have h3 := ihn h2
+        have h4 := StepStar.trans _ _ _ step h3
+        exact h4
+
 theorem completeness (e: Expr) : StepStar e (Expr.Const (eval e)) := by
     induction e with
     | Const x =>
@@ -95,6 +148,28 @@ theorem completeness (e: Expr) : StepStar e (Expr.Const (eval e)) := by
         -- ih2 : StepStar e2 (Expr.Const (eval e2))
         simp [eval]
         have a := stepstar_add_left _ _ e2 ih1
-        sorry
-    | Sub e1 e2 => sorry
-    | Mul e1 e2 => sorry
+        have b := stepstar_add_right (eval e1) e2 _ ih2
+        have c := Step.addConstConst (eval e1) (eval e2)
+        have d := StepStar.trans _ _ _ c (StepStar.refl (Expr.Const (eval e1 + eval e2)))
+        have e := chasle_step_star a (chasle_step_star b d)
+        exact e
+    | Sub e1 e2 ih1 ih2 =>
+        -- ih1 : StepStar e1 (Expr.Const (eval e1))
+        -- ih2 : StepStar e2 (Expr.Const (eval e2))
+        simp [eval]
+        have a := stepstar_sub_left _ _ e2 ih1
+        have b := stepstar_sub_right (eval e1) e2 _ ih2
+        have c := Step.subConstConst (eval e1) (eval e2)
+        have d := StepStar.trans _ _ _ c (StepStar.refl (Expr.Const (eval e1 - eval e2)))
+        have e := chasle_step_star a (chasle_step_star b d)
+        exact e
+    | Mul e1 e2 ih1 ih2 =>
+        -- ih1 : StepStar e1 (Expr.Const (eval e1))
+        -- ih2 : StepStar e2 (Expr.Const (eval e2))
+        simp [eval]
+        have a := stepstar_mul_left _ _ e2 ih1
+        have b := stepstar_mul_right (eval e1) e2 _ ih2
+        have c := Step.mulConstConst (eval e1) (eval e2)
+        have d := StepStar.trans _ _ _ c (StepStar.refl (Expr.Const (eval e1 * eval e2)))
+        have e := chasle_step_star a (chasle_step_star b d)
+        exact e
