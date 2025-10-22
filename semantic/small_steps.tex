@@ -3,15 +3,30 @@
 \usepackage{amssymb}
 \usepackage{MnSymbol}
 \usepackage{bussproofs}
+\title{Small Steps Semantics for tiny arithmetic expression grammar}
+
 \begin{document}
 
+\maketitle
+
+\section{Grammar}
+We'll define the set of arithmetic expressions as the expressions that can be built from the following grammar:
+\begin{align*}
+E_A ::= n (\in \mathbb{Z}) \mid E_A + E_A \mid E_A \times E_A \mid E_A - E_A
+\end{align*}
+
+\section{Small Steps Semantic}
+\bigskip
+\bigskip
 \begin{prooftree}
 \AxiomC{}
-\LeftLabel{(A$_1$)}
-\RightLabel{\begin{pmatrix}
-    \text{if } n_1, n_2 \in \mathbb{N},\\
+\LeftLabel{($A_1$)}
+\RightLabel{
+\begin{pmatrix}
+    \text{if } n_1, n_2 \in \mathbb{Z},\\
     \text{op } \in \left\{ +, -, \times \right\}\\
-    \text{and } n = n_1 \text{ op } n_2 \end{pmatrix}}
+    \text{and } n \in \mathbb{Z}, \hspace{.5em} n = n_1 \text{ op } n_2
+\end{pmatrix}}
 \UnaryInfC{$\langle n_1 \text{ op } n_2 \rangle \hookrightarrow \langle n \rangle$}
 \end{prooftree}
 
@@ -20,11 +35,28 @@
 
 \begin{prooftree}
 \AxiomC{$\langle e_1 \rangle \hookrightarrow \langle e'_1 \rangle$}
-
-\LeftLabel{(A$_2$)}
-\RightLabel{(if op $\in \left\{ +, -, \times \right\}$)}
+\LeftLabel{($A_2$)}
+\RightLabel{
+\begin{pmatrix}
+\text{if op } \in \left\{ +, -, \times \right\}
+\end{pmatrix}
+}
 \UnaryInfC{$\langle e_1 \text{ op } e_2 \rangle \hookrightarrow \langle e'_1 \text{ op } e_2 \rangle$}
 \end{prooftree}
 
+\bigskip
+\bigskip
+
+\begin{prooftree}
+\AxiomC{$\langle e_2 \rangle \hookrightarrow \langle e'_2 \rangle$}
+\LeftLabel{($A_3$)}
+\RightLabel{
+\begin{pmatrix}
+\text{if op } \in \left\{+, -, \times \right\} \\
+\text{and } n \in \mathbb{Z}
+\end{pmatrix}
+}
+\UnaryInfC{$\langle n \text{ op } e_2 \rangle \hookrightarrow \langle n \text{ op } e'_2 \rangle$}
+\end{prooftree}
 
 \end{document}
