@@ -1,10 +1,14 @@
-\documentclass{article}
+\documentclass{scrartcl}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{MnSymbol}
 \usepackage{bussproofs}
 \title{Small Steps Semantics for tiny arithmetic expression grammar}
+\author{Paul Passeron}
 
+\newcommand{\op}{\mathbin{\mathrm{op}\hspace{0.2em}}}
+
+\date{\today}
 \begin{document}
 
 \maketitle
@@ -12,51 +16,51 @@
 \section{Grammar}
 We'll define the set of arithmetic expressions as the expressions that can be built from the following grammar:
 \begin{align*}
-E_A ::= n (\in \mathbb{Z}) \mid E_A + E_A \mid E_A \times E_A \mid E_A - E_A
+E_A ::= n (\in \mathbb{Z}) \mid v (\in \mathbf{V})\mid E_A + E_A \mid E_A \times E_A \mid E_A - E_A
 \end{align*}
 
+With $\mathbf{V}$ the set of variables.
+
 \section{Small Steps Semantic}
+Let $\sigma \in \mathcal{V}[\mathbb{Z}]$ ($= \mathcal{F}(\mathbf{V}, \mathbb{Z})$) a valuation.
+
 \bigskip
 \bigskip
 \begin{prooftree}
 \AxiomC{}
 \LeftLabel{($A_1$)}
-\RightLabel{
-\begin{pmatrix}
-    \text{if } n_1, n_2 \in \mathbb{Z},\\
-    \text{op } \in \left\{ +, -, \times \right\}\\
-    \text{and } n \in \mathbb{Z}, \hspace{.5em} n = n_1 \text{ op } n_2
-\end{pmatrix}}
-\UnaryInfC{$\langle n_1 \text{ op } n_2 \rangle \hookrightarrow \langle n \rangle$}
+\RightLabel{$(n_1, n_2 \in \mathbb{Z}, \op \in \{+,-,\times\}, n = n_1 \op n_2)$}
+\UnaryInfC{$\langle n_1 \op n_2, \sigma \rangle \hookrightarrow \langle n, \sigma \rangle$}
 \end{prooftree}
 
 \bigskip
 \bigskip
 
 \begin{prooftree}
-\AxiomC{$\langle e_1 \rangle \hookrightarrow \langle e'_1 \rangle$}
+\AxiomC{}
 \LeftLabel{($A_2$)}
-\RightLabel{
-\begin{pmatrix}
-\text{if op } \in \left\{ +, -, \times \right\}
-\end{pmatrix}
-}
-\UnaryInfC{$\langle e_1 \text{ op } e_2 \rangle \hookrightarrow \langle e'_1 \text{ op } e_2 \rangle$}
+\RightLabel{$(v \in \mathbf{V})$}
+\UnaryInfC{$\langle v, \sigma \rangle \hookrightarrow \langle \sigma(v), \sigma \rangle$}
+\end{prooftree}
+
+
+\bigskip
+\bigskip
+
+\begin{prooftree}
+\AxiomC{$\langle e_1, \sigma \rangle \hookrightarrow \langle e'_1, \sigma \rangle$}
+\LeftLabel{($A_3$)}
+\RightLabel{$(\op \in \{+,-,\times\})$}
+\UnaryInfC{$\langle e_1 \op e_2, \sigma \rangle \hookrightarrow \langle e'_1 \op e_2 , \sigma\rangle$}
 \end{prooftree}
 
 \bigskip
 \bigskip
 
 \begin{prooftree}
-\AxiomC{$\langle e_2 \rangle \hookrightarrow \langle e'_2 \rangle$}
-\LeftLabel{($A_3$)}
-\RightLabel{
-\begin{pmatrix}
-\text{if op } \in \left\{+, -, \times \right\} \\
-\text{and } n \in \mathbb{Z}
-\end{pmatrix}
-}
-\UnaryInfC{$\langle n \text{ op } e_2 \rangle \hookrightarrow \langle n \text{ op } e'_2 \rangle$}
+\AxiomC{$\langle e_2, \sigma \rangle \hookrightarrow \langle e'_2, \sigma \rangle$}
+\LeftLabel{($A_4$)}
+\RightLabel{$(\op \in \{+,-,\times\}, n \in \mathbb{Z})$}
+\UnaryInfC{$\langle n \op e_2, \sigma \rangle \hookrightarrow \langle n \op e'_2, \sigma \rangle$}
 \end{prooftree}
-
 \end{document}
