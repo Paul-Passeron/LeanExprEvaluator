@@ -50,3 +50,13 @@ theorem boolstepstar_preserves_eval_bool (e e': BoolExpr V):
   | trans _ _ _ h_step _ ihn =>
     rw [<- ihn]
     exact boolstep_preserves_eval_bool _ _ h_step
+
+theorem BoolStepStar.notStep {V: Type} {val: V -> Int}
+  (e e': BoolExpr V):
+    BoolStepStar V val e e' -> BoolStepStar V val (BoolExpr.Not e) (BoolExpr.Not e') := by
+  intro h
+  induction h with
+  | refl => apply BoolStepStar.refl
+  | trans e₁ e₂ e₃ step _ ihn =>
+    have h':= BoolStep.notStep _ _ step
+    apply BoolStepStar.trans _ _ _ h' ihn

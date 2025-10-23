@@ -100,15 +100,3 @@ theorem arstepstar_mul_right (n: Int) (e₂ e₂': ArExpr V) :
         apply StepStar.trans
         . apply ArStep.mulRight _ _ _ step1
         . exact ih
-
-theorem chasles_step_star {e₁ e₂ e3: ArExpr V}:
-    ArStepStar V val e₁ e₂ ->
-        ArStepStar V val e₂ e3 ->
-            ArStepStar V val e₁ e3 := by
-    intros h1 h2
-    induction h1 with
-    | refl e => exact h2
-    | trans a b c step rest ihn =>
-        have h3 := ihn h2
-        have h4 := StepStar.trans _ _ _ step h3
-        exact h4

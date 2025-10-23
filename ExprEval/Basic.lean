@@ -58,4 +58,14 @@ theorem eval_bool_soundness (e: BoolExpr V) (b: Bool) :
     exact boolstepstar_preserves_eval_bool _ _ h
 
 theorem eval_bool_completeness (e: BoolExpr V): BoolStepStar V val e (BoolExpr.Const (eval_bool val e)) := by
-    sorry
+    induction e with
+    | Const b =>
+        simp [eval_bool]
+        apply BoolStepStar.refl
+    | Not e ihn =>
+        simp [eval_bool]
+        have h := BoolStepStar.notStep e _ ihn
+        have h1 := BoolStep.notIsBoolNot (eval_bool val e) (val := val)
+        have h2 := (step_to_stepstar V h1)
+        apply chasles_step_star V h h2
+    | _ => sorry

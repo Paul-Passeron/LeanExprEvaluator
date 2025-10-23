@@ -75,6 +75,6 @@ inductive BoolStep: (val: V -> Int) -> (BoolExpr V) -> (BoolExpr V) -> Prop wher
             (BoolExpr.Not e)
             (BoolExpr.Not e')
 
-def BoolStepStar (V: Type) := StepStar (StepKind := BoolStep) V
-def BoolStepStar.refl {V: Type} (val: V -> Int) := StepStar.refl (StepKind := BoolStep) val
-def BoolStepStar.trans {V: Type} {val: V -> Int} e₁ e₂ e₃ := StepStar.trans e₁ e₂ e₃ (StepKind := BoolStep) (val := val)
+def BoolStepStar (V: Type) := StepStar (Step := BoolStep) V
+def BoolStepStar.refl {V: Type} (val: V -> Int) := StepStar.refl (Step := BoolStep) val
+def BoolStepStar.trans {V: Type} {val: V -> Int} e₁ e₂ e₃ := StepStar.trans e₁ e₂ e₃ (Step := BoolStep) (val := val)
