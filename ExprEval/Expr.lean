@@ -20,3 +20,7 @@ inductive BoolExpr : Type
     | Not : BoolExpr -> BoolExpr
     | And : BoolExpr -> BoolExpr -> BoolExpr
     | Or : BoolExpr -> BoolExpr -> BoolExpr
+
+inductive StepStar {ExprType: Type} {StepKind: (V -> Int) -> ExprType -> ExprType -> Prop} : (val: V -> Int) -> ExprType -> ExprType -> Prop where
+        | refl val e : StepStar val e e
+        | trans e₁ e₂ e₃ : StepKind val e₁ e₂ -> StepStar val e₂ e₃ -> StepStar val e₁ e₃

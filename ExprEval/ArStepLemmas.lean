@@ -19,7 +19,6 @@ theorem arstep_preserve_eval (e e': ArExpr V): (ArStep V val) e e' -> eval V val
 
     | getVarValue var => simp [eval]
 
-
 theorem arstepstar_preserves_eval (e e': ArExpr V) :
     ArStepStar V val e e' -> eval V val e = eval V val e' := by
     intro h
@@ -31,9 +30,9 @@ theorem arstepstar_add_left (e₁ e₁' e₂: ArExpr V) :
     ArStepStar V val e₁ e₁' -> ArStepStar V val (ArExpr.Add e₁ e₂) (ArExpr.Add e₁' e₂) := by
     intro h
     induction h with
-    | refl _ => apply ArStepStar.refl
+    | refl _ => apply StepStar.refl
     | trans _ _ _ step _ ih =>
-        apply ArStepStar.trans
+        apply StepStar.trans
         . exact ArStep.addLeft _ _ _ step
         . exact ih
 
@@ -44,13 +43,11 @@ theorem arstepstar_add_right (n: Int) (e₂ e₂': ArExpr V) :
             (ArExpr.Add (ArExpr.Const n) e₂') := by
     intro h
     induction h with
-    | refl _ => apply ArStepStar.refl
+    | refl _ => apply StepStar.refl
     | trans e₁ e₂ e3 step1 step2 ih =>
-        apply ArStepStar.trans
+        apply StepStar.trans
         . apply ArStep.addRight _ _ _ step1
         . exact ih
-
-
 
 theorem arstepstar_sub_left (e₁ e₁' e₂: ArExpr V) :
     ArStepStar V val e₁ e₁' ->
@@ -59,9 +56,9 @@ theorem arstepstar_sub_left (e₁ e₁' e₂: ArExpr V) :
             (ArExpr.Sub e₁' e₂) := by
     intro h
     induction h with
-    | refl _ => apply ArStepStar.refl
+    | refl _ => apply StepStar.refl
     | trans _ _ _ step _ ih =>
-        apply ArStepStar.trans
+        apply StepStar.trans
         . exact ArStep.subLeft _ _ _ step
         . exact ih
 
@@ -72,13 +69,11 @@ theorem arstepstar_sub_right (n: Int) (e₂ e₂': ArExpr V) :
             (ArExpr.Sub (ArExpr.Const n) e₂') := by
     intro h
     induction h with
-    | refl _ => apply ArStepStar.refl
+    | refl _ => apply StepStar.refl
     | trans e₁ e₂ e3 step1 step2 ih =>
-        apply ArStepStar.trans
+        apply StepStar.trans
         . apply ArStep.subRight _ _ _ step1
         . exact ih
-
-
 
 theorem arstepstar_mul_left (e₁ e₁' e₂: ArExpr V) :
     ArStepStar V val e₁ e₁' ->
@@ -87,9 +82,9 @@ theorem arstepstar_mul_left (e₁ e₁' e₂: ArExpr V) :
             (ArExpr.Mul e₁' e₂) := by
     intro h
     induction h with
-    | refl _ => apply ArStepStar.refl
+    | refl _ => apply StepStar.refl
     | trans _ _ _ step _ ih =>
-        apply ArStepStar.trans
+        apply StepStar.trans
         . exact ArStep.mulLeft _ _ _ step
         . exact ih
 
@@ -100,9 +95,9 @@ theorem arstepstar_mul_right (n: Int) (e₂ e₂': ArExpr V) :
             (ArExpr.Mul (ArExpr.Const n) e₂') := by
     intro h
     induction h with
-    | refl _ => apply ArStepStar.refl
+    | refl _ => apply StepStar.refl
     | trans e₁ e₂ e3 step1 step2 ih =>
-        apply ArStepStar.trans
+        apply StepStar.trans
         . apply ArStep.mulRight _ _ _ step1
         . exact ih
 
@@ -115,5 +110,5 @@ theorem chasles_step_star {e₁ e₂ e3: ArExpr V}:
     | refl e => exact h2
     | trans a b c step rest ihn =>
         have h3 := ihn h2
-        have h4 := ArStepStar.trans _ _ _ step h3
+        have h4 := StepStar.trans _ _ _ step h3
         exact h4

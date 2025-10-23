@@ -1,6 +1,5 @@
 import ExprEval.Expr
 
-
 variable (V: Type)
 
 -- Arithmetic Expressions
@@ -48,6 +47,6 @@ inductive ArStep: (val: V -> Int) -> (ArExpr V) -> (ArExpr V) -> Prop where
     | subRight (n: Int) (e₂ e₂': ArExpr V) : ArStep val e₂ e₂' -> ArStep val (ArExpr.Sub (ArExpr.Const n) e₂)  (ArExpr.Sub (ArExpr.Const n) e₂')
     | mulRight (n: Int) (e₂ e₂': ArExpr V) : ArStep val e₂ e₂' -> ArStep val (ArExpr.Mul (ArExpr.Const n) e₂)  (ArExpr.Mul (ArExpr.Const n) e₂')
 
-inductive ArStepStar : (val: V -> Int) -> (ArExpr V) -> (ArExpr V) -> Prop where
-    | refl val e : ArStepStar val e e
-    | trans e₁ e₂ e₃ : (ArStep V val) e₁ e₂ -> ArStepStar val e₂ e₃ -> ArStepStar val e₁ e₃
+def ArStepStar (V: Type) := StepStar (StepKind := ArStep V) V
+def ArStepStar.refl {V: Type} (val: V -> Int) := StepStar.refl (StepKind := ArStep V) val
+def ArStepStar.trans {V: Type} {val: V -> Int} e₁ e₂ e₃ := StepStar.trans e₁ e₂ e₃ (StepKind := ArStep V) (val := val)
