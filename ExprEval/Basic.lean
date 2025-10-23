@@ -252,7 +252,7 @@ inductive BoolStep: (val: V -> Int) -> (BoolExpr V) -> (BoolExpr V) -> Prop wher
     | andLeftTrue (e: BoolExpr V): BoolStep val
         (BoolExpr.And BoolExpr.True e)
         e
-    | andLeftFalse (e: BoolExpr V): BoolStep val
+    | orLeftFalse (e: BoolExpr V): BoolStep val
         (BoolExpr.Or BoolExpr.False e)
         e
     | andLeftShortCircuit e : BoolStep val
@@ -298,16 +298,16 @@ inductive BoolStep: (val: V -> Int) -> (BoolExpr V) -> (BoolExpr V) -> Prop wher
                 (BoolExpr.And e₁ e₂)
                 (BoolExpr.And e₁' e₂)
 
-    | orStepRight (e₁ e₂ e₂': BoolExpr V):
-        BoolStep val e₂ e₂' ->
-            BoolStep val
-                (BoolExpr.Or e₁ e₂)
-                (BoolExpr.Or e₁ e₂')
-    | andStepRight (e₁ e₂ e₂': BoolExpr V):
-        BoolStep val e₂ e₂' ->
-            BoolStep val
-                (BoolExpr.And e₁ e₂)
-                (BoolExpr.And e₁ e₂')
+    -- | orStepRight (e₁ e₂ e₂': BoolExpr V):
+    --     BoolStep val e₂ e₂' ->
+    --         BoolStep val
+    --             (BoolExpr.Or e₁ e₂)
+    --             (BoolExpr.Or e₁ e₂')
+    -- | andStepRight (e₁ e₂ e₂': BoolExpr V):
+    --     BoolStep val e₂ e₂' ->
+    --         BoolStep val
+    --             (BoolExpr.And e₁ e₂)
+    --             (BoolExpr.And e₁ e₂')
     | notStep (e e' : BoolExpr V):
         BoolStep val e e' -> BoolStep val
             (BoolExpr.Not e)
