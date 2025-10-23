@@ -26,8 +26,6 @@ inductive BoolStep: (val: V -> Int) -> (BoolExpr V) -> (BoolExpr V) -> Prop wher
     | orLeftShortCircuit e : BoolStep val
         (BoolExpr.Or (BoolExpr.Const true) e)
         (BoolExpr.Const true)
-
-
     | lessConstConstTrue n₁ n₂ : n₁ < n₂ -> BoolStep val
         (BoolExpr.Less (ArExpr.Const n₁) (ArExpr.Const n₂))
         (BoolExpr.Const true)

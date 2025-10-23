@@ -68,4 +68,23 @@ theorem eval_bool_completeness (e: BoolExpr V): BoolStepStar V val e (BoolExpr.C
         have h1 := BoolStep.notIsBoolNot (eval_bool val e) (val := val)
         have h2 := (step_to_stepstar V h1)
         apply chasles_step_star V h h2
+    | And l r l_step r_step =>
+        simp [eval_bool]
+        by_cases h: (eval_bool val l)
+        .   simp [and]
+            rw [h]
+            simp
+            rw [h] at l_step
+            have h1 := BoolStep.andLeftTrue r (val := val)
+            have h2 := StepStar.trans _ _ _ h1 r_step
+            have h3 := BoolStepStar.andStepLeft _ _ r l_step
+            exact chasles_step_star V h3 h2
+        .   replace h := eq_false_of_ne_true h
+            rw [h]
+            rw [h] at l_step
+            simp [and]
+            have h1 := BoolStepStar.andStepLeft _ _ r l_step
+            have h2 := BoolStep.andLeftShortCircuit r (val := val)
+            have h3 := step_to_stepstar V h2
+            exact chasles_step_star V h1 h3
     | _ => sorry

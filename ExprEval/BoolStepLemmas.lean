@@ -60,3 +60,14 @@ theorem BoolStepStar.notStep {V: Type} {val: V -> Int}
   | trans e₁ e₂ e₃ step _ ihn =>
     have h':= BoolStep.notStep _ _ step
     apply BoolStepStar.trans _ _ _ h' ihn
+
+theorem BoolStepStar.andStepLeft (e₁ e₁' e₂: BoolExpr V):
+  BoolStepStar V val e₁ e₁' -> BoolStepStar V val
+    (BoolExpr.And e₁ e₂)
+    (BoolExpr.And e₁' e₂) := by
+  intro h
+  induction h with
+  | refl => apply BoolStepStar.refl
+  | trans a b c step _ ihn =>
+    have h' := BoolStep.andStepLeft (e₂ := e₂) _ _ step
+    apply BoolStepStar.trans _ _ _ h' ihn
