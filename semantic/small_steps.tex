@@ -63,4 +63,157 @@ Let $\sigma \in \mathcal{V}[\mathbb{Z}]$ ($= \mathcal{F}(\mathbf{V}, \mathbb{Z})
 \RightLabel{$(\op \in \{+,-,\times\}, n \in \mathbb{Z})$}
 \UnaryInfC{$\langle n \op e_2, \sigma \rangle \hookrightarrow \langle n \op e'_2, \sigma \rangle$}
 \end{prooftree}
+
+\bigskip
+\bigskip
+\begin{prooftree}
+\AxiomC{}
+\LeftLabel{($B_1$)}
+\UnaryInfC{$\langle \text{not(false)}, \sigma \rangle \hookrightarrow \langle \text{true}, \sigma \rangle$}
+\end{prooftree}
+
+\bigskip
+\bigskip
+\begin{prooftree}
+\AxiomC{}
+\LeftLabel{($B_2$)}
+\UnaryInfC{$\langle \text{not(true)}, \sigma \rangle \hookrightarrow \langle \text{false}, \sigma \rangle$}
+\end{prooftree}
+
+\bigskip
+\bigskip
+\begin{prooftree}
+\AxiomC{}
+\LeftLabel{($B_3$)}
+\RightLabel{($e \in E_B$)}
+\UnaryInfC{$\langle \text{true} \land e, \sigma \rangle \hookrightarrow \langle e, \sigma \rangle$}
+\end{prooftree}
+
+\bigskip
+\bigskip
+\begin{prooftree}
+\AxiomC{}
+\LeftLabel{($B_4$)}
+\RightLabel{($e \in E_B$)}
+\UnaryInfC{$\langle \text{false} \lor e, \sigma \rangle \hookrightarrow \langle e, \sigma \rangle$}
+\end{prooftree}
+
+\bigskip
+\bigskip
+\begin{prooftree}
+\AxiomC{}
+\LeftLabel{($B_5$)}
+\RightLabel{($e \in E_B$)}
+\UnaryInfC{$\langle \text{false} \land e, \sigma \rangle \hookrightarrow \langle \text{false}, \sigma \rangle$}
+\end{prooftree}
+
+\bigskip
+\bigskip
+\begin{prooftree}
+\AxiomC{}
+\LeftLabel{($B_6$)}
+\RightLabel{($e \in E_B$)}
+\UnaryInfC{$\langle \text{true} \lor e, \sigma \rangle \hookrightarrow \langle \text{true}, \sigma \rangle$}
+\end{prooftree}
+
+\bigskip
+\bigskip
+\begin{prooftree}
+\AxiomC{$n_1 < n_2$}
+\LeftLabel{($B_7$)}
+\RightLabel{($n_1, n_2 \in \mathbb{Z}$)}
+\UnaryInfC{$\langle n_1 < n_2, \sigma \rangle \hookrightarrow \langle \text{true}, \sigma \rangle$}
+\end{prooftree}
+
+\bigskip
+\bigskip
+\begin{prooftree}
+\AxiomC{$n_1 \geq n_2$}
+\LeftLabel{($B_8$)}
+\RightLabel{($n_1, n_2 \in \mathbb{Z}$)}
+\UnaryInfC{$\langle n_1 < n_2, \sigma \rangle \hookrightarrow \langle \text{false}, \sigma \rangle$}
+\end{prooftree}
+
+\bigskip
+\bigskip
+\begin{prooftree}
+\AxiomC{$n_1 = n_2$}
+\LeftLabel{($B_9$)}
+\RightLabel{($n_1, n_2 \in \mathbb{Z}$)}
+\UnaryInfC{$\langle n_1 = n_2, \sigma \rangle \hookrightarrow \langle \text{true}, \sigma \rangle$}
+\end{prooftree}
+
+\bigskip
+\bigskip
+\begin{prooftree}
+\AxiomC{$n_1 \neq n_2$}
+\LeftLabel{($B_{10}$)}
+\RightLabel{($n_1, n_2 \in \mathbb{Z}$)}
+\UnaryInfC{$\langle n_1 = n_2, \sigma \rangle \hookrightarrow \langle \text{false}, \sigma \rangle$}
+\end{prooftree}
+
+\bigskip
+\bigskip
+\begin{prooftree}
+\AxiomC{$\langle e_1, \sigma \rangle \hookrightarrow \langle e_1', \sigma \rangle$}
+\LeftLabel{($B_{11}$)}
+\RightLabel{($e_1, e_1', e_2 \in E_A$)}
+\UnaryInfC{$\langle e_1 < e_2, \sigma \rangle \hookrightarrow \langle e_1' < e_2, \sigma \rangle$}
+\end{prooftree}
+
+\bigskip
+\bigskip
+\begin{prooftree}
+\AxiomC{$\langle e_1, \sigma \rangle \hookrightarrow \langle e_1', \sigma \rangle$}
+\LeftLabel{($B_{12}$)}
+\RightLabel{($e_1, e_1', e_2 \in E_A$)}
+\UnaryInfC{$\langle e_1 = e_2, \sigma \rangle \hookrightarrow \langle e_1' = e_2, \sigma \rangle$}
+\end{prooftree}
+
+\bigskip
+\bigskip
+\begin{prooftree}
+\AxiomC{$\langle e_2, \sigma \rangle \hookrightarrow \langle e_2 ', \sigma \rangle$}
+\LeftLabel{($B_{13}$)}
+\RightLabel{($e_1, e_2, e_2' \in E_A$)}
+\UnaryInfC{$\langle e_1 < e_2, \sigma \rangle \hookrightarrow \langle e_1 < e_2', \sigma \rangle$}
+\end{prooftree}
+
+\bigskip
+\bigskip
+\begin{prooftree}
+\AxiomC{$\langle e_2, \sigma \rangle \hookrightarrow \langle e_2 ', \sigma \rangle$}
+\LeftLabel{($B_{14}$)}
+\RightLabel{($e_1, e_2, e_2' \in E_A$)}
+\UnaryInfC{$\langle e_1 = e_2, \sigma \rangle \hookrightarrow \langle e_1 = e_2', \sigma \rangle$}
+\end{prooftree}
+
+\bigskip
+\bigskip
+\begin{prooftree}
+\AxiomC{$\langle e_1, \sigma \rangle \hookrightarrow \langle e_1', \sigma \rangle$}
+\LeftLabel{($B_{15}$)}
+\RightLabel{($e_1, e_1', e_2 \in E_B$)}
+\UnaryInfC{$\langle e_1 \land e_2, \sigma \rangle \hookrightarrow \langle e_1' \land e_2, \sigma \rangle$}
+\end{prooftree}
+
+\bigskip
+\bigskip
+\begin{prooftree}
+\AxiomC{$\langle e_1, \sigma \rangle \hookrightarrow \langle e_1', \sigma \rangle$}
+\LeftLabel{($B_{16}$)}
+\RightLabel{($e_1, e_1', e_2 \in E_B$)}
+\UnaryInfC{$\langle e_1 \lor e_2, \sigma \rangle \hookrightarrow \langle e_1' \lor e_2, \sigma \rangle$}
+\end{prooftree}
+
+\bigskip
+\bigskip
+\begin{prooftree}
+\AxiomC{$\langle e, \sigma \rangle \hookrightarrow \langle e', \sigma \rangle$}
+\LeftLabel{($B_{17}$)}
+\RightLabel{($e, e' \in E_B$)}
+\UnaryInfC{$\langle \text{not}(e), \sigma \rangle \hookrightarrow \text{not}(e'), \sigma \rangle$}
+\end{prooftree}
+
+
 \end{document}
