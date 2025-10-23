@@ -71,3 +71,14 @@ theorem BoolStepStar.andStepLeft (e₁ e₁' e₂: BoolExpr V):
   | trans a b c step _ ihn =>
     have h' := BoolStep.andStepLeft (e₂ := e₂) _ _ step
     apply BoolStepStar.trans _ _ _ h' ihn
+
+theorem BoolStepStar.orStepLeft (e₁ e₁' e₂: BoolExpr V):
+  BoolStepStar V val e₁ e₁' -> BoolStepStar V val
+    (BoolExpr.Or e₁ e₂)
+    (BoolExpr.Or e₁' e₂) := by
+  intro h
+  induction h with
+  | refl => apply BoolStepStar.refl
+  | trans a b c step _ ihn =>
+    have h' := BoolStep.orStepLeft (e₂ := e₂) _ _ step
+    apply BoolStepStar.trans _ _ _ h' ihn
