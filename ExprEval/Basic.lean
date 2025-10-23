@@ -1,5 +1,8 @@
 import ExprEval.Arithmetic
+import ExprEval.Boolean
+
 import ExprEval.ArStepLemmas
+import ExprEval.BoolStepLemmas
 
 variable (V: Type)
 
@@ -48,3 +51,11 @@ theorem eval_completeness (e: ArExpr V) : ArStepStar V val e (ArExpr.Const (eval
         have a := ArStep.getVarValue var (val := val)
         have b := ArStepStar.refl val (ArExpr.Const (val var))
         exact ArStepStar.trans (val := val) _ _ _ a b
+
+theorem eval_bool_soundness (e: BoolExpr V) (b: Bool) :
+    BoolStepStar V val e (BoolExpr.Const b) -> eval_bool val e = b := by
+    intro h
+    exact boolstepstar_preserves_eval_bool _ _ h
+
+theorem eval_bool_completeness (e: BoolExpr V): BoolStepStar V val e (BoolExpr.Const (eval_bool val e)) := by
+    sorry

@@ -13,8 +13,7 @@ inductive ArExpr: Type
 -- Boolean Expressions
 
 inductive BoolExpr : Type
-    | True: BoolExpr
-    | False : BoolExpr
+    | Const: Bool -> BoolExpr
     | Less: ArExpr V -> ArExpr V -> BoolExpr
     | Eq: ArExpr V -> ArExpr V -> BoolExpr
     | Not : BoolExpr -> BoolExpr

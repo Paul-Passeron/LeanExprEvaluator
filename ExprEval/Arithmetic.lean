@@ -4,7 +4,6 @@ variable (V: Type)
 
 -- Arithmetic Expressions
 
-
 def eval (val: V -> Int) (e: ArExpr V) : Int :=
     match e with
         | ArExpr.Const x => x

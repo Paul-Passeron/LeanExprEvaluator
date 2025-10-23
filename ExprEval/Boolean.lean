@@ -3,8 +3,7 @@ import ExprEval.ArStepLemmas
 
 def eval_bool (val: V -> Int) (e: BoolExpr V): Bool :=
     match e with
-    | BoolExpr.True => true
-    | BoolExpr.False => false
+    | BoolExpr.Const b => b
     | BoolExpr.Less l r =>  (eval V val l) < (eval V val r)
     | BoolExpr.Eq l r => (eval V val l) == (eval V val r)
     | BoolExpr.Not e => not (eval_bool val e)
@@ -12,30 +11,35 @@ def eval_bool (val: V -> Int) (e: BoolExpr V): Bool :=
     | BoolExpr.Or l r => if eval_bool val l then true else eval_bool val r
 
 inductive BoolStep: (val: V -> Int) -> (BoolExpr V) -> (BoolExpr V) -> Prop where
-    | notFalseIsTrue: BoolStep val
-        (BoolExpr.Not BoolExpr.False)
-        BoolExpr.True
-    | notTrueIsFalse : BoolStep val
-        (BoolExpr.Not BoolExpr.True)
-         BoolExpr.False
+    | notIsBoolNot (b: Bool): BoolStep val
+        (BoolExpr.Not (BoolExpr.Const b))
+        (BoolExpr.Const !b)
     | andLeftTrue (e: BoolExpr V): BoolStep val
-        (BoolExpr.And BoolExpr.True e)
+        (BoolExpr.And (BoolExpr.Const true) e)
         e
     | orLeftFalse (e: BoolExpr V): BoolStep val
-        (BoolExpr.Or BoolExpr.False e)
+        (BoolExpr.Or (BoolExpr.Const false) e)
         e
     | andLeftShortCircuit e : BoolStep val
-        (BoolExpr.And BoolExpr.False e)
-        BoolExpr.False
+        (BoolExpr.And (BoolExpr.Const false) e)
+        (BoolExpr.Const false)
     | orLeftShortCircuit e : BoolStep val
-        (BoolExpr.Or BoolExpr.True e)
-        BoolExpr.True
-    | lessConstConst n₁ n₂ : BoolStep val
+        (BoolExpr.Or (BoolExpr.Const true) e)
+        (BoolExpr.Const true)
+
+
+    | lessConstConstTrue n₁ n₂ : n₁ < n₂ -> BoolStep val
         (BoolExpr.Less (ArExpr.Const n₁) (ArExpr.Const n₂))
-        (if n₁ < n₂ then BoolExpr.True else BoolExpr.False)
-    | eqConstConst n₁ n₂ : BoolStep val
+        (BoolExpr.Const true)
+    | lessConstConstFalse n₁ n₂ : n₁ >= n₂ -> BoolStep val
+        (BoolExpr.Less (ArExpr.Const n₁) (ArExpr.Const n₂))
+        (BoolExpr.Const false)
+    | eqConstConstTrue n₁ n₂ : n₁ = n₂ -> BoolStep val
         (BoolExpr.Eq (ArExpr.Const n₁) (ArExpr.Const n₂))
-        (if n₁ == n₂ then BoolExpr.True else BoolExpr.False)
+        (BoolExpr.Const true)
+    | eqConstConstFalse n₁ n₂ : n₁ != n₂ -> BoolStep val
+        (BoolExpr.Eq (ArExpr.Const n₁) (ArExpr.Const n₂))
+        (BoolExpr.Const false)
     | lessArStepLeft (e₁ e₁' e₂: ArExpr V):
         ArStep V val e₁ e₁' ->
             BoolStep val
@@ -66,18 +70,11 @@ inductive BoolStep: (val: V -> Int) -> (BoolExpr V) -> (BoolExpr V) -> Prop wher
             BoolStep val
                 (BoolExpr.And e₁ e₂)
                 (BoolExpr.And e₁' e₂)
-
-    -- | orStepRight (e₁ e₂ e₂': BoolExpr V):
-    --     BoolStep val e₂ e₂' ->
-    --         BoolStep val
-    --             (BoolExpr.Or e₁ e₂)
-    --             (BoolExpr.Or e₁ e₂')
-    -- | andStepRight (e₁ e₂ e₂': BoolExpr V):
-    --     BoolStep val e₂ e₂' ->
-    --         BoolStep val
-    --             (BoolExpr.And e₁ e₂)
-    --             (BoolExpr.And e₁ e₂')
     | notStep (e e' : BoolExpr V):
         BoolStep val e e' -> BoolStep val
             (BoolExpr.Not e)
             (BoolExpr.Not e')
+
+def BoolStepStar (V: Type) := StepStar (StepKind := BoolStep) V
+def BoolStepStar.refl {V: Type} (val: V -> Int) := StepStar.refl (StepKind := BoolStep) val
+def BoolStepStar.trans {V: Type} {val: V -> Int} e₁ e₂ e₃ := StepStar.trans e₁ e₂ e₃ (StepKind := BoolStep) (val := val)
