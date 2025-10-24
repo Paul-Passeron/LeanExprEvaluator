@@ -1,24 +1,27 @@
 variable (V: Type)
 
--- Arithmetic Expressions
+mutual
+    -- Arithmetic Expressions
 
-inductive ArExpr: Type
-    | Const: Int -> ArExpr
-    | Add: ArExpr -> ArExpr -> ArExpr
-    | Sub: ArExpr -> ArExpr -> ArExpr
-    | Mul: ArExpr -> ArExpr -> ArExpr
-    | Var: V -> ArExpr
+    inductive ArExpr: Type
+        | Const: Int -> ArExpr
+        | Add: ArExpr -> ArExpr -> ArExpr
+        | Sub: ArExpr -> ArExpr -> ArExpr
+        | Mul: ArExpr -> ArExpr -> ArExpr
+        | Var: V -> ArExpr
+        -- TODO: -- | If : BoolExpr -> ArExpr -> ArExpr -> ArExpr
 
+    -- Boolean Expressions
 
--- Boolean Expressions
+    inductive BoolExpr : Type
+        | Const: Bool -> BoolExpr
+        | Less: ArExpr -> ArExpr -> BoolExpr
+        | Eq: ArExpr -> ArExpr -> BoolExpr
+        | Not : BoolExpr -> BoolExpr
+        | And : BoolExpr -> BoolExpr -> BoolExpr
+        | Or : BoolExpr -> BoolExpr -> BoolExpr
 
-inductive BoolExpr : Type
-    | Const: Bool -> BoolExpr
-    | Less: ArExpr V -> ArExpr V -> BoolExpr
-    | Eq: ArExpr V -> ArExpr V -> BoolExpr
-    | Not : BoolExpr -> BoolExpr
-    | And : BoolExpr -> BoolExpr -> BoolExpr
-    | Or : BoolExpr -> BoolExpr -> BoolExpr
+end
 
 def StepKind (V: Type) (ExprType: Type):= (V -> Int) -> ExprType -> ExprType -> Prop
 
@@ -43,3 +46,23 @@ theorem step_to_stepstar {ExprKind: Type} {Step: StepKind V ExprKind} {e e': Exp
     intro h
     have h': StepStar (Step := Step) V val e' e' := StepStar.refl val e'
     apply StepStar.trans _ _ _ h h'
+
+mutual
+    def eval_bool (val: V -> Int) (e: BoolExpr V): Bool :=
+        match e with
+        | BoolExpr.Const b => b
+        | BoolExpr.Less l r =>  (eval val l) < (eval val r)
+        | BoolExpr.Eq l r => (eval val l) == (eval val r)
+        | BoolExpr.Not e => not (eval_bool val e)
+        | BoolExpr.And l r => if eval_bool val l then eval_bool val r else false
+        | BoolExpr.Or l r => if eval_bool val l then true else eval_bool val r
+
+    def eval (val: V -> Int) (e: ArExpr V) : Int :=
+        match e with
+            | ArExpr.Const x => x
+            | ArExpr.Add lhs rhs => (eval val lhs) + (eval val rhs)
+            | ArExpr.Sub lhs rhs => (eval val lhs) - (eval val rhs)
+            | ArExpr.Mul lhs rhs => (eval val lhs) * (eval val rhs)
+            | ArExpr.Var v => val v
+            -- | ArExpr.If cond then_e else_e => if eval_bool val cond then eval val then_e else eval val else_e
+end
