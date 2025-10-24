@@ -9,7 +9,7 @@ mutual
         | Sub: ArExpr -> ArExpr -> ArExpr
         | Mul: ArExpr -> ArExpr -> ArExpr
         | Var: V -> ArExpr
-        -- TODO: -- | If : BoolExpr -> ArExpr -> ArExpr -> ArExpr
+        | If : BoolExpr -> ArExpr -> ArExpr -> ArExpr
 
     -- Boolean Expressions
 
@@ -64,5 +64,5 @@ mutual
             | ArExpr.Sub lhs rhs => (eval val lhs) - (eval val rhs)
             | ArExpr.Mul lhs rhs => (eval val lhs) * (eval val rhs)
             | ArExpr.Var v => val v
-            -- | ArExpr.If cond then_e else_e => if eval_bool val cond then eval val then_e else eval val else_e
+            | ArExpr.If cond then_e else_e => if eval_bool val cond then eval val then_e else eval val else_e
 end

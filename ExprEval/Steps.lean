@@ -36,6 +36,10 @@ inductive ArStep: (val: V -> Int) -> (ArExpr V) -> (ArExpr V) -> Prop where
     | subRight (n: Int) (e₂ e₂': ArExpr V) : ArStep val e₂ e₂' -> ArStep val (ArExpr.Sub (ArExpr.Const n) e₂)  (ArExpr.Sub (ArExpr.Const n) e₂')
     | mulRight (n: Int) (e₂ e₂': ArExpr V) : ArStep val e₂ e₂' -> ArStep val (ArExpr.Mul (ArExpr.Const n) e₂)  (ArExpr.Mul (ArExpr.Const n) e₂')
 
+    | ifStep (e e': BoolExpr V) (a b : ArExpr V): BoolStep val e e' ->
+        ArStep val (ArExpr.If e a b) (ArExpr.If e' a b)
+    | ifCondTrue (a b: ArExpr V) : ArStep val (ArExpr.If (BoolExpr.Const true) a b) a
+    | ifCondFalse (a b: ArExpr V) : ArStep val (ArExpr.If (BoolExpr.Const false) a b) b
 
 inductive BoolStep: (val: V -> Int) -> (BoolExpr V) -> (BoolExpr V) -> Prop where
     | notIsBoolNot (b: Bool): BoolStep val

@@ -31,7 +31,23 @@ mutual
         simp [eval, ihn]
 
       | getVarValue var => simp [eval]
-
+      | ifCondTrue a b =>
+        simp [eval]
+        simp [eval_bool]
+      | ifCondFalse a b =>
+        simp [eval]
+        simp [eval_bool]
+      | ifStep e e' a b bstep =>
+        have ihn := boolstep_preserves_eval_bool e e' bstep
+        cases h: (eval_bool V val e)
+        . simp [eval]
+          rw [h]
+          rw [<- ihn]
+          simp
+          intro noth
+          -- Todo: contradiction between h and noth
+          sorry
+        . sorry
   theorem arstepstar_preserves_eval (e e': ArExpr V) :
       ArStepStar V val e e' -> eval V val e = eval V val e' := by
       intro h
@@ -114,6 +130,17 @@ mutual
           apply StepStar.trans
           . apply ArStep.mulRight _ _ _ step1
           . exact ih
+
+  theorem ArStepStar.ifStep (e e': BoolExpr V) (a b: ArExpr V): BoolStepStar V val e e' ->
+    ArStepStar V val (ArExpr.If e a b) (ArExpr.If e' a b) := by
+    intro h
+    induction h with
+    | refl => apply StepStar.refl
+    | trans e₁ e₂ e₃ step sstar ih =>
+      apply StepStar.trans
+      . apply ArStep.ifStep _ _ _ _ step
+      . exact ih
+
 
 
   theorem boolstep_preserves_eval_bool (e e': BoolExpr V):
