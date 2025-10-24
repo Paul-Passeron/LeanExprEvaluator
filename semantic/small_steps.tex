@@ -56,12 +56,38 @@ Let $\sigma \in \mathcal{V}[\mathbb{Z}]$ ($= \mathcal{F}(\mathbf{V}, \mathbb{Z})
 
 \bigskip
 \bigskip
-
 \begin{prooftree}
 \AxiomC{$\langle e_2, \sigma \rangle \hookrightarrow \langle e'_2, \sigma \rangle$}
 \LeftLabel{($A_4$)}
 \RightLabel{$(\op \in \{+,-,\times\}, n \in \mathbb{Z})$}
 \UnaryInfC{$\langle n \op e_2, \sigma \rangle \hookrightarrow \langle n \op e'_2, \sigma \rangle$}
+\end{prooftree}
+
+\bigskip
+\bigskip
+\begin{prooftree}
+\AxiomC{$\langle e, \sigma \rangle \hookrightarrow \langle e', \sigma \rangle$}
+\LeftLabel{($A_5$)}
+\RightLabel{($a, b \in E_A, e \in E_B$)}
+\UnaryInfC{$\langle \text{if } e \text{ then } a \text{ else } b, \sigma \rangle \hookrightarrow \langle \text{if } e' \text{ then } a \text{ else } b, \sigma \rangle$}
+\end{prooftree}
+
+\bigskip
+\bigskip
+\begin{prooftree}
+\AxiomC{}
+\LeftLabel{($A_6$)}
+\RightLabel{($a, b \in E_A$)}
+\UnaryInfC{$\langle \text{if true then } a \text{ else } b, \sigma \rangle \hookrightarrow \langle a, \sigma \rangle$}
+\end{prooftree}
+
+\bigskip
+\bigskip
+\begin{prooftree}
+\AxiomC{}
+\LeftLabel{($A_7$)}
+\RightLabel{($a, b \in E_A$)}
+\UnaryInfC{$\langle \text{if false then } a \text{ else } b, \sigma \rangle \hookrightarrow \langle b, \sigma \rangle$}
 \end{prooftree}
 
 \bigskip
