@@ -107,4 +107,31 @@ theorem eval_bool_completeness (e: BoolExpr V): BoolStepStar V val e (BoolExpr.C
             have h2 := StepStar.trans _ _ _ h1 r_step
             have h3 := BoolStepStar.orStepLeft _ _ r l_step
             exact chasles_step_star V h3 h2
+    | Eq l r =>
+        simp [eval_bool]
+
+        by_cases h: (eval V val l == eval V val r)
+
+        .   replace h := eq_of_beq h
+            rw [h]
+            simp
+            have h1 := BoolStep.eqConstConstTrue _ _ h (val := val)
+            have hl := eval_completeness V l (val := val)
+            have hr := eval_completeness V r (val := val)
+            have h2 := BoolStepStar.eqArStepStarLeft l (ArExpr.Const (eval V val l)) r hl
+            have h3 := BoolStepStar.eqArStepStarRight (ArExpr.Const (eval V val l)) r (ArExpr.Const (eval V val r)) hr
+            have h4 := chasles_step_star V h2 h3
+            exact chasles_step_star V h4 (step_to_stepstar V h1)
+
+        .   replace h := eq_false_of_ne_true h
+            rw [h]
+            have h' := ne_of_beq_false h
+            rw [<- bne_iff_ne] at h'
+            have h1 := BoolStep.eqConstConstFalse _ _ h' (val := val)
+            have hl := eval_completeness V l (val := val)
+            have hr := eval_completeness V r (val := val)
+            have h2 := BoolStepStar.eqArStepStarLeft l (ArExpr.Const (eval V val l)) r hl
+            have h3 := BoolStepStar.eqArStepStarRight (ArExpr.Const (eval V val l)) r (ArExpr.Const (eval V val r)) hr
+            have h4 := chasles_step_star V h2 h3
+            exact chasles_step_star V h4 (step_to_stepstar V h1)
     | _ => sorry

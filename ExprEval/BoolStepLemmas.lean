@@ -82,3 +82,33 @@ theorem BoolStepStar.orStepLeft (e₁ e₁' e₂: BoolExpr V):
   | trans a b c step _ ihn =>
     have h' := BoolStep.orStepLeft (e₂ := e₂) _ _ step
     apply BoolStepStar.trans _ _ _ h' ihn
+
+theorem BoolStepStar.eqArStepStarLeft (e₁ e₁' e₂: ArExpr V):
+  ArStepStar V val e₁ e₁' ->
+    BoolStepStar V val
+      (BoolExpr.Eq e₁ e₂)
+      (BoolExpr.Eq e₁' e₂) := by
+  intro h
+  induction h with
+  | refl => apply BoolStepStar.refl
+  | trans a b c step _ ihn =>
+    have h' := BoolStep.eqArStepLeft _ _ e₂ step
+    apply StepStar.trans _ _ _ h' ihn
+
+-- | eqArStepRight (e₁ e₂ e₂': ArExpr V):
+--         ArStep V val e₂ e₂' ->
+--             BoolStep val
+--                 (BoolExpr.Eq e₁ e₂)
+--                 (BoolExpr.Eq e₁ e₂')
+
+theorem BoolStepStar.eqArStepStarRight (e₁ e₂ e₂': ArExpr V):
+  ArStepStar V val e₂ e₂' ->
+    BoolStepStar V val
+      (BoolExpr.Eq e₁ e₂)
+      (BoolExpr.Eq e₁ e₂') := by
+  intro h
+  induction h with
+  | refl => apply StepStar.refl
+  | trans a b c step _ ihn =>
+    have h' := BoolStep.eqArStepRight e₁ _ _ step
+    apply StepStar.trans _ _ _ h' ihn
